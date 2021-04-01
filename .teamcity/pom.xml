@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <project>
   <modelVersion>4.0.0</modelVersion>
-  <name>Demo Config DSL Script</name>
-  <groupId>Demo</groupId>
-  <artifactId>Demo_dsl</artifactId>
+  <name>TestVcs Config DSL Script</name>
+  <groupId>TestVcs</groupId>
+  <artifactId>TestVcs_dsl</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <parent>
@@ -15,14 +15,14 @@
   <repositories>
     <repository>
       <id>jetbrains-all</id>
-      <url>http://download.jetbrains.com/teamcity-repository</url>
+      <url>https://download.jetbrains.com/teamcity-repository</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
     </repository>
     <repository>
       <id>teamcity-server</id>
-      <url>http://localhost:8111/app/dsl-plugins-repository</url>
+      <url>http://192.168.0.53:8111/app/dsl-plugins-repository</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
@@ -32,12 +32,12 @@
   <pluginRepositories>
     <pluginRepository>
       <id>JetBrains</id>
-      <url>http://download.jetbrains.com/teamcity-repository</url>
+      <url>https://download.jetbrains.com/teamcity-repository</url>
     </pluginRepository>
   </pluginRepositories>
 
   <build>
-    <sourceDirectory>.</sourceDirectory>
+    <sourceDirectory>${basedir}</sourceDirectory>
     <plugins>
       <plugin>
         <artifactId>kotlin-maven-plugin</artifactId>
