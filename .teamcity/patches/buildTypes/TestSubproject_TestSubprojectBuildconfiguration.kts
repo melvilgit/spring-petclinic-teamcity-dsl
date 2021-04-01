@@ -12,5 +12,9 @@ in the project with id = 'TestSubproject', and delete the patch script.
 create(RelativeId("TestSubproject"), BuildType({
     id("TestSubproject_TestSubprojectBuildconfiguration")
     name = "test_subproject_buildconfiguration"
+
+    vcs {
+        root(DslContext.settingsRoot)
+    }
 }))
 
