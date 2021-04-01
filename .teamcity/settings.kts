@@ -26,13 +26,13 @@ To debug in IntelliJ Idea, open the 'Maven Projects' tool window (View
 */
 
 version = "2020.1"
-
-project {
-
-    buildType(TestBuildConfiguration)
-
-    subProject(TestSubproject)
-}
+//
+//project {
+//
+//    buildType(TestBuildConfiguration)
+//
+//    subProject(TestSubproject)
+//}
 
 object TestBuildConfiguration : BuildType({
     name = "test_build_configuration"
@@ -73,13 +73,13 @@ object TestSubproject_TestSubprojectBuildconfiguration : BuildType({
 val operatingSystems = listOf("Mac OS X", "Windows", "Linux")
 val jdkVersions = listOf("JDK_18", "JDK_11")
 
-//project {
-//   for (os in operatingSystems) {
-//       for (jdk in jdkVersions) {
-//           buildType(Build(os, jdk))
-//       }
-//   }
-//}
+project {
+   for (os in operatingSystems) {
+       for (jdk in jdkVersions) {
+           buildType(Build(os, jdk))
+       }
+   }
+}
 
 
 class Build(val os: String, val jdk: String) : BuildType({
