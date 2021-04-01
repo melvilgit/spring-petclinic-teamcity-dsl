@@ -1,5 +1,7 @@
+import jetbrains.buildServer.configs.kotlin.v10.toExtId
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
 
 /*
 The settings script is an entry point for defining a TeamCity
@@ -61,4 +63,42 @@ object TestSubproject_TestSubprojectBuildconfiguration : BuildType({
     vcs {
         root(DslContext.settingsRoot)
     }
+})
+
+
+
+
+
+// for dynamic
+val operatingSystems = listOf("Mac OS X", "Windows", "Linux")
+val jdkVersions = listOf("JDK_18", "JDK_11")
+
+//project {
+//   for (os in operatingSystems) {
+//       for (jdk in jdkVersions) {
+//           buildType(Build(os, jdk))
+//       }
+//   }
+//}
+
+
+class Build(val os: String, val jdk: String) : BuildType({
+   id("Build_${os}_${jdk}".toExtId())
+   name = "Build ($os, $jdk)"
+
+   vcs {
+       root(DslContext.settingsRoot)
+   }
+
+   steps {
+       maven {
+           goals = "clean package"
+           mavenVersion = defaultProvidedVersion()
+           jdkHome = "%env.${jdk}%"
+       }
+   }
+
+   requirements {
+       equals("teamcity.agent.jvm.os.name", os)
+   }
 })
