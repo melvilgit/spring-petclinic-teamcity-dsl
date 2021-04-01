@@ -33,7 +33,7 @@ version = "2020.1"
 project {
 
     buildType(TestBuildConfiguration)
-    subProject(TestSubProject)
+    subProject(TestSubProject1)
 }
 
 
@@ -52,8 +52,8 @@ object TestBuildConfiguration : BuildType({
     }
 })
 
-object TestSubProject : Project({
-    name = "test_subproject"
+object TestSubProject1 : Project({
+    name = "test_subproject1"
     buildType(TestSubProjectBuildConfiguration)
 })
 
