@@ -1,6 +1,11 @@
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
+import jetbrains.buildServer.configs.kotlin.v2019_2.*
+import jetbrains.buildServer.configs.kotlin.v2019_2.Project
+import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
+
+
 /*
 The settings script is an entry point for defining a TeamCity
 project hierarchy. The script should contain a single call to the
@@ -28,7 +33,10 @@ version = "2020.1"
 project {
 
     buildType(TestBuildConfiguration)
+    subProject(TestSubProject)
 }
+
+
 
 object TestBuildConfiguration : BuildType({
     name = "test_build_configuration"
@@ -38,6 +46,23 @@ object TestBuildConfiguration : BuildType({
             name = "test_build_step"
             scriptContent = """
                 #!/bin/bash
+                echo "hello"
+            """.trimIndent()
+        }
+    }
+})
+
+object TestSubProject : Project({
+    name = "test_subproject"
+    buildType(TestSubProjectBuildConfiguration)
+})
+
+object TestSubProjectBuildConfiguration: BuildType({
+    name = "test_sub_project_build_configuration"
+    steps{
+        script {
+            name = "test subproject build step"
+            scriptContent = """
                 echo "hello"
             """.trimIndent()
         }
