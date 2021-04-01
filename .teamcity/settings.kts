@@ -1,11 +1,6 @@
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
-import jetbrains.buildServer.configs.kotlin.v2019_2.*
-import jetbrains.buildServer.configs.kotlin.v2019_2.Project
-import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
-
-
 /*
 The settings script is an entry point for defining a TeamCity
 project hierarchy. The script should contain a single call to the
@@ -28,15 +23,15 @@ To debug in IntelliJ Idea, open the 'Maven Projects' tool window (View
 'Debug' option is available in the context menu for the task.
 */
 
-version = "2020.1"
+version = "2020.2"
 
 project {
 
     buildType(TestBuildConfiguration)
+
+    subProject(TestSubproject)
     subProject(TestSubProject1)
 }
-
-
 
 object TestBuildConfiguration : BuildType({
     name = "test_build_configuration"
@@ -52,19 +47,35 @@ object TestBuildConfiguration : BuildType({
     }
 })
 
+
 object TestSubProject1 : Project({
     name = "test_subproject1"
+
     buildType(TestSubProjectBuildConfiguration)
 })
 
-object TestSubProjectBuildConfiguration: BuildType({
+object TestSubProjectBuildConfiguration : BuildType({
     name = "test_sub_project_build_configuration"
-    steps{
+
+    steps {
         script {
             name = "test subproject build step"
-            scriptContent = """
-                echo "hello"
-            """.trimIndent()
+            scriptContent = """echo "hello""""
         }
+    }
+})
+
+
+object TestSubproject : Project({
+    name = "test_subproject"
+
+    buildType(TestSubproject_TestSubprojectBuildconfiguration)
+})
+
+object TestSubproject_TestSubprojectBuildconfiguration : BuildType({
+    name = "test_subproject_buildconfiguration"
+
+    vcs {
+        root(DslContext.settingsRoot)
     }
 })
