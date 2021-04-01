@@ -23,14 +23,13 @@ To debug in IntelliJ Idea, open the 'Maven Projects' tool window (View
 'Debug' option is available in the context menu for the task.
 */
 
-version = "2020.2"
+version = "2020.1"
 
 project {
 
     buildType(TestBuildConfiguration)
 
     subProject(TestSubproject)
-    subProject(TestSubProject1)
 }
 
 object TestBuildConfiguration : BuildType({
@@ -48,22 +47,6 @@ object TestBuildConfiguration : BuildType({
 })
 
 
-object TestSubProject1 : Project({
-    name = "test_subproject1"
-
-    buildType(TestSubProjectBuildConfiguration)
-})
-
-object TestSubProjectBuildConfiguration : BuildType({
-    name = "test_sub_project_build_configuration"
-
-    steps {
-        script {
-            name = "test subproject build step"
-            scriptContent = """echo "hello""""
-        }
-    }
-})
 
 
 object TestSubproject : Project({
