@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <project>
   <modelVersion>4.0.0</modelVersion>
-  <name>TestVcs Config DSL Script</name>
-  <groupId>TestVcs</groupId>
-  <artifactId>TestVcs_dsl</artifactId>
+  <name>ReleaseEngineering_CloudDeliveryPipelines Config DSL Script</name>
+  <groupId>ReleaseEngineering_CloudDeliveryPipelines</groupId>
+  <artifactId>ReleaseEngineering_CloudDeliveryPipelines_dsl</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <parent>
@@ -22,7 +22,7 @@
     </repository>
     <repository>
       <id>teamcity-server</id>
-      <url>http://192.168.0.53:8111/app/dsl-plugins-repository</url>
+      <url>https://gwre-devexp-ci-production-devci.gwre-devops.net/app/dsl-plugins-repository</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
@@ -100,5 +100,12 @@
       <version>${kotlin.version}</version>
       <scope>compile</scope>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.json/json -->
+    <dependency>
+        <groupId>org.json</groupId>
+        <artifactId>json</artifactId>
+        <version>20210307</version>
+    </dependency>
+
   </dependencies>
 </project>
