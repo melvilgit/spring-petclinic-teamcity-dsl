@@ -13,12 +13,14 @@ class GWCPProjectProvisioning(private val props: ProjectProperties) : Project({
     description = "GWCP Project provisioning"
     val clusterOrderList = arrayListOf<Project>()
     val tenantsList = props.filterKeys("project\\.tenant\\.\\d+")
-    for (tenant in tenantsList) {
-        var (clusterName, tenantName) = props.get(tenant).split("/")
-        props.set("project.cluster.name",clusterName.trim())
-        props.set("project.tenant.name", tenantName.trim())
-        val clusterProject = ClusterProject(props)
-        subProject(clusterProject)
-    }
+   tenantsList.forEach { tenant ->
+       run {
+           var (clusterName, tenantName) = props.get(tenant).split("/")
+           props.set("project.cluster.name", clusterName.trim())
+           props.set("project.tenant.name", tenantName.trim())
+           val clusterProject = ClusterProject(props)
+           subProject(clusterProject)
+       }
+   }
 
 })
