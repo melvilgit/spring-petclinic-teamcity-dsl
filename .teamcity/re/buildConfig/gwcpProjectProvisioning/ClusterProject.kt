@@ -11,7 +11,7 @@ class ClusterProject(private val props: ProjectProperties) : Project({
     val clusterProjectId = "${gwcpProvisioningProjectId}_${clusterName}"
     props.set("project.cluster.id", clusterProjectId)
     id(clusterProjectId)
-    //val tenantProject = TenantProject(props)
-    //subProject(tenantProject)
+    val tenantProject = TenantProject(props)
+    subProject(tenantProject)
 
 })
