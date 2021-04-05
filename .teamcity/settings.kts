@@ -50,7 +50,7 @@ project {
                val subProjectsOrderList = arrayListOf<Project>()
 
                val assemblyLines = AssemblyLines(props)
-               subProject(AssemblyLines(props))
+               subProject(assemblyLines)
                subProjectsOrderList.add(assemblyLines)
 
 
@@ -66,7 +66,7 @@ project {
                }
 
                val gwcpProjectProvisioning = GWCPProjectProvisioning(props)
-
+               subProject(gwcpProjectProvisioning)
 //               subProject GWCPProjectProvisioning@{
 //                   parentId(pipelineProjectId)
 //                   val gwcpProvisioningProjectId = "${pipelineProjectId}_GWCPProjectProvisioning"
