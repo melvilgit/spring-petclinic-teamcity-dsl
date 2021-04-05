@@ -2,7 +2,7 @@ package re
 
 val PIPELINE_CONFIG = arrayOf (
     hashMapOf<String, Any> (
-        "project.name" to "Dobson BC CC CM PC",
+        "project.name" to "Dobson BC CC CM PC1",
         "branch.name" to "releng_dobson_50_4-bc-cc-cm-pc",
         "project.tenant.1" to "mint/releng"
 
