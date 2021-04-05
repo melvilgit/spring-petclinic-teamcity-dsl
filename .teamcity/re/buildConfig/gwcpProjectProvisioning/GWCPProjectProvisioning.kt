@@ -15,10 +15,8 @@ class GWCPProjectProvisioning(private val props: ProjectProperties) : Project({
     val tenantsList = props.filterKeys("project\\.tenant\\.\\d+")
     for (tenant in tenantsList) {
         var (clusterName, tenantName) = props.get(tenant).split("/")
-        clusterName = clusterName.trim()
-        tenantName = tenantName.trim()
-        props.set("project.cluster.name",clusterName)
-        props.set("project.tenant.name", tenantName)
+        props.set("project.cluster.name",clusterName.trim())
+        props.set("project.tenant.name", tenantName.trim())
         val clusterProject = ClusterProject(props)
         subProject(clusterProject)
     }
