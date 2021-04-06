@@ -22,13 +22,13 @@ class ProjectProperties(
         projectPropertiesMap[key] = value
     }
 
-    fun getArray(key: String): Array<*> {
+    fun getArrayList(key: String): ArrayList<*> {
         val v = projectPropertiesMap[key]
 
-        if (v is Array<*>) {
+        if (v is ArrayList<*>) {
             return v
         } else {
-            throw IllegalStateException("Property '$key' not an array")
+            throw IllegalStateException("Property '$key' not an arrayList")
         }
     }
 
@@ -45,6 +45,9 @@ class ProjectProperties(
     fun filterKeys(pattern: String) : List<String>{
         return projectPropertiesMap.keys.filter { key-> key.matches(regex = Regex(pattern)) }
     }
+
+
+
 
 
 }
