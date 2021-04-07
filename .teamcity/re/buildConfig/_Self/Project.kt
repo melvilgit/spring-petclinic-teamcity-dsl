@@ -6,6 +6,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.Project
 import jetbrains.buildServer.configs.kotlin.v2019_2.projectFeatures.dockerRegistry
 import re.PIPELINE_CONFIG
+import re.ProjectProperties
 import re.buildConfig.SubProjectBuilder
 import re.buildConfig.assemblyLines.AssemblyLinesProject
 
@@ -56,12 +57,12 @@ object Project : Project({
         props.set("project.id", pipelineProjectId)
         subProject(AssemblyLinesProject(props))
         /* SubProject for a CBC based on a branch*/
-        val pipeLineProject = SubProjectBuilder(this)
-            .createSubProject(props.get("project.name"), pipelineProjectId)
-            .build()
+//        val pipeLineProject = SubProjectBuilder(this)
+//            .createSubProject(props.get("project.name"), pipelineProjectId)
+//            .build()
         // subProjectsOrder = arrayListOf(RelativeId("PortfolioAssembly"), RelativeId("UploadBasePackages"), RelativeId("OrangeBar"), RelativeId("CloudDeploymentsNonProduction"), RelativeId("Prototypes"), RelativeId("InfrastructureTests"))
 
-//    subProject(PortfolioAssembly.Project)
+      //subProject(AssemblyLinesProject(props))
 //    subProject(OrangeBar.Project)
 //    subProject(CloudDeploymentsNonProduction.Project)
 //    subProject(UploadBasePackages.Project)

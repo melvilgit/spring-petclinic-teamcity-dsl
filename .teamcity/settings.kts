@@ -1,19 +1,5 @@
-import jetbrains.buildServer.configs.kotlin.v2019_2.Parameter
-import jetbrains.buildServer.configs.kotlin.v2019_2.Project
-import jetbrains.buildServer.configs.kotlin.v2019_2.project
-import jetbrains.buildServer.configs.kotlin.v2019_2.version
-import re.PIPELINE_CONFIG
-import re.ProjectProperties
-import re.buildConfig.SubProjectBuilder
-import re.buildConfig.assemblyLines.buildTypes.Build
-import re.buildConfig.assemblyLines.buildTypes.DockerizeAndPublish
-import re.buildConfig.assemblyLines.buildTypes.PromoteArtifactsToS3
-import re.buildConfig.assemblyLines.buildTypes.VersionUpdate
-import re.buildConfig.cloudDeployments.*
-import re.buildConfig.gwcpProjectProvisioning.*
-import re.buildConfig.uploadBasePackages.UploadBasePackages
-import re.buildConfig.assemblyLines.AssemblyLinesProject
-
+import jetbrains.buildServer.configs.kotlin.v2019_2.*
+import re.buildConfig._Self.Project
 /*
 The settings script is an entry point for defining a TeamCity
 project hierarchy. The script should contain a single call to the
@@ -133,3 +119,5 @@ version = "2020.1"
 //    }
 //}
 
+version = "2020.1"
+project(Project)

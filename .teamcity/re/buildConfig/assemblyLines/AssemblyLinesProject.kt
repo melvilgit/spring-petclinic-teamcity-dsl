@@ -14,9 +14,11 @@ import re.buildConfig.assemblyLines.vcsRoots.AssemblyGradlePlugin
 
 
 class AssemblyLinesProject(private val props: ProjectProperties) : Project({
-    val projectId = props.get("project.assemblyLine.id")
+
+    val projectId = "${props.get("project.id")}_AssemblyLine"
+    props.set("project.assemblyLine.id", projectId)
     id(projectId)
-    name = "Portfolio Assembly"
+    name = "Assembly Lines - ${projectId}"
     description = "Portfolio Assembly"
 
     vcsRoot(VcsAssemblyLines(props))
@@ -76,10 +78,9 @@ class AssemblyLinesProject(private val props: ProjectProperties) : Project({
             password = "credentialsJSON:73013dd5-ced3-45bf-8935-a43b93ceab46"
         }
     }
-    val assemblyLineBuildTypesList = arrayListOf(VersionUpdate(props),Build(props),DockerizeAndPublish(props),PromoteArtifactsToS3(props))
+    val assemblyLineBuildTypesList = arrayListOf(VersionUpdate(props), Build(props), DockerizeAndPublish(props), PromoteArtifactsToS3(props))
 
-    for(assemblyLineBuildType in assemblyLineBuildTypesList)
-    {
+    for (assemblyLineBuildType in assemblyLineBuildTypesList) {
         buildType(assemblyLineBuildType)
     }
     buildTypesOrder = assemblyLineBuildTypesList
