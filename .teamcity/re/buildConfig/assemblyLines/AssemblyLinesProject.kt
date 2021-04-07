@@ -28,7 +28,7 @@ class AssemblyLinesProject(private val props: ProjectProperties) : Project({
             -v ${'$'}HOME/.docker:/root/.docker
         """.trimIndent())
         param("TEAMCITY_PASSWORD", "%system.teamcity.auth.password%")
-        password("sys-sas-artifactory-password", "credentialsJSON:73013dd5-ced3-45bf-8935-a43b93ceab46", display = ParameterDisplay.HIDDEN)
+        password("sys-sas-artifactory-password", "credentialsJSON:daecf980-d3c3-47dc-a560-0e147557a4e2", display = ParameterDisplay.HIDDEN)
         param("sas-user", "sys-sas")
         param("TEAMCITY_USER", "%system.teamcity.auth.userId%")
         param("SAS-BUILD-AGENT-11", "dtr.guidewire.com/sys-sas/build-agent:openjdk11-latest")
