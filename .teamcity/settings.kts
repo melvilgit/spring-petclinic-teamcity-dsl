@@ -5,11 +5,14 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.version
 import re.PIPELINE_CONFIG
 import re.ProjectProperties
 import re.buildConfig.SubProjectBuilder
-import re.buildConfig.assemblyLines.*
+import re.buildConfig.assemblyLines.buildTypes.Build
+import re.buildConfig.assemblyLines.buildTypes.DockerizeAndPublish
+import re.buildConfig.assemblyLines.buildTypes.PromoteArtifactsToS3
+import re.buildConfig.assemblyLines.buildTypes.VersionUpdate
 import re.buildConfig.cloudDeployments.*
 import re.buildConfig.gwcpProjectProvisioning.*
 import re.buildConfig.uploadBasePackages.UploadBasePackages
-
+import re.buildConfig.assemblyLines.AssemblyLinesProject
 
 /*
 The settings script is an entry point for defining a TeamCity
@@ -37,7 +40,7 @@ version = "2020.1"
 
 project {
 
-    params.add(Parameter("teamcity.ui.settings.readOnly", "true"))
+    params.add(Parameter("teamcity.ui.settings.readOnly", "false"))
     val projectProperties = PIPELINE_CONFIG.map { project -> ProjectProperties(project.toMutableMap()) }
 
     for (props in projectProperties) {
@@ -45,24 +48,16 @@ project {
         val subProjectsOrderList = arrayListOf<Project>()
         val pipelineProjectId = props.get("branch.name").replace('-', '_')
         props.set("project.id", pipelineProjectId)
-
+        /* Branch Name Subproject */
         val pipeLineProject = SubProjectBuilder(this)
             .createSubProject(props.get("project.name"), pipelineProjectId)
             .build()
 
+        /* Assembly Line subproject */
         val assemblyLineProjectId = "${pipelineProjectId}_AssemblyLine"
         props.set("project.assemblyLine.id", assemblyLineProjectId)
-        val assemblyLineProject = SubProjectBuilder(pipeLineProject)
-            .createSubProject("Assembly Line", assemblyLineProjectId)
-            .withBuildTypeList(
-                arrayListOf(
-                    VersionUpdate(props),
-                    Build(props),
-                    DockerizeAndPublish(props),
-                    PromoteArtifactsToS3(props)
-                )
-            )
-            .build()
+        val assemblyLineProject = AssemblyLinesProject(props)
+        pipeLineProject.subProject(assemblyLineProject)
         subProjectsOrderList.add(assemblyLineProject)
 
 
