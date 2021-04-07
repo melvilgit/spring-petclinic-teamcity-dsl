@@ -38,98 +38,98 @@ To debug in IntelliJ Idea, open the 'Maven Projects' tool window (View
 
 version = "2020.1"
 
-project {
-
-    params.add(Parameter("teamcity.ui.settings.readOnly", "false"))
-    val projectProperties = PIPELINE_CONFIG.map { project -> ProjectProperties(project.toMutableMap()) }
-
-    for (props in projectProperties) {
-
-        val subProjectsOrderList = arrayListOf<Project>()
-        val pipelineProjectId = props.get("branch.name").replace('-', '_')
-        props.set("project.id", pipelineProjectId)
-        /* Branch Name Subproject */
-        val pipeLineProject = SubProjectBuilder(this)
-            .createSubProject(props.get("project.name"), pipelineProjectId)
-            .build()
-
-        /* Assembly Line subproject */
-        val assemblyLineProjectId = "${pipelineProjectId}_AssemblyLine"
-        props.set("project.assemblyLine.id", assemblyLineProjectId)
-        val assemblyLineProject = AssemblyLinesProject(props)
-        pipeLineProject.subProject(assemblyLineProject)
-        subProjectsOrderList.add(assemblyLineProject)
-
-
-        val uploadBasePackagesProjectId = "${pipelineProjectId}_UploadBasePackages"
-        props.set("project.uploadBasePackages.id", uploadBasePackagesProjectId)
-        val uploadBasePackagesProject = SubProjectBuilder(pipeLineProject)
-            .createSubProject("Upload Base Packages", uploadBasePackagesProjectId)
-            .withBuildTypeList(arrayListOf(UploadBasePackages(props)))
-            .build()
-        subProjectsOrderList.add(uploadBasePackagesProject)
-
-        val gwcpProvisioningProjectId = "${pipelineProjectId}_GWCPProjectProvisioning"
-        props.set("project.gwcpProvisioning.id", gwcpProvisioningProjectId)
-        val clusterOrderList = arrayListOf<Project>()
-        val gwcpProvisioningProject = SubProjectBuilder(pipeLineProject)
-            .createSubProject("GWCP Project provisioning", gwcpProvisioningProjectId)
-            .build()
-        subProjectsOrderList.add(gwcpProvisioningProject)
-
-        val tenantsList = props.getArrayList("clusters.tenants")
-
-        for (tenant in tenantsList) {
-            var (clusterName, tenantName) = tenant.toString().split(".")
-            clusterName = clusterName.trim()
-            tenantName = tenantName.trim()
-
-            val clusterProjectId = "${gwcpProvisioningProjectId}_${clusterName}"
-            props.set("project.cluster.id", clusterProjectId)
-
-            val clusterProject = SubProjectBuilder(gwcpProvisioningProject)
-                .createSubProject(clusterName, clusterProjectId)
-                .build()
-            clusterOrderList.add(clusterProject)
-
-
-            val tenantProjectId = "${clusterProjectId}_${tenantName}"
-            props.set("project.tenant.id", tenantProjectId)
-
-            SubProjectBuilder(clusterProject)
-                .createSubProject(tenantName, tenantProjectId)
-                .withBuildTypeList(
-                    arrayListOf(
-                        CallUpdateISSourceCode(props),
-                        DeleteProject(props),
-                        IntegrationTest(props),
-                        MigrateCICD(props),
-                        PatchCICD(props),
-                        ProvisionProject(props),
-                        UpdateCICD(props)
-
-                    )
-                )
-                .build()
-        }
-        gwcpProvisioningProject.subProjectsOrder = clusterOrderList
-
-        val cloudDeploymentsProjectId = "${pipelineProjectId}_CloudDeployments"
-        props.set("project.cloudDeployments.id", cloudDeploymentsProjectId)
-        val cloudDeploymentsProject = SubProjectBuilder(pipeLineProject)
-            .createSubProject("Cloud Deployments", cloudDeploymentsProjectId)
-            .withBuildTypeList(
-                arrayListOf(
-                    DeployInGWCPEnvironment(props),
-                    DeploymentHealthCheck(props)
-                )
-            )
-            .build()
-
-        subProjectsOrderList.add(cloudDeploymentsProject)
-
-        pipeLineProject.subProjectsOrder = subProjectsOrderList
-
-    }
-}
+//project {
+//
+//    params.add(Parameter("teamcity.ui.settings.readOnly", "false"))
+//    val projectProperties = PIPELINE_CONFIG.map { project -> ProjectProperties(project.toMutableMap()) }
+//
+//    for (props in projectProperties) {
+//
+//        val subProjectsOrderList = arrayListOf<Project>()
+//        val pipelineProjectId = props.get("branch.name").replace('-', '_')
+//        props.set("project.id", pipelineProjectId)
+//        /* Branch Name Subproject */
+//        val pipeLineProject = SubProjectBuilder(this)
+//            .createSubProject(props.get("project.name"), pipelineProjectId)
+//            .build()
+//
+//        /* Assembly Line subproject */
+//        val assemblyLineProjectId = "${pipelineProjectId}_AssemblyLine"
+//        props.set("project.assemblyLine.id", assemblyLineProjectId)
+//        val assemblyLineProject = AssemblyLinesProject(props)
+//        pipeLineProject.subProject(assemblyLineProject)
+//        subProjectsOrderList.add(assemblyLineProject)
+//
+//
+//        val uploadBasePackagesProjectId = "${pipelineProjectId}_UploadBasePackages"
+//        props.set("project.uploadBasePackages.id", uploadBasePackagesProjectId)
+//        val uploadBasePackagesProject = SubProjectBuilder(pipeLineProject)
+//            .createSubProject("Upload Base Packages", uploadBasePackagesProjectId)
+//            .withBuildTypeList(arrayListOf(UploadBasePackages(props)))
+//            .build()
+//        subProjectsOrderList.add(uploadBasePackagesProject)
+//
+//        val gwcpProvisioningProjectId = "${pipelineProjectId}_GWCPProjectProvisioning"
+//        props.set("project.gwcpProvisioning.id", gwcpProvisioningProjectId)
+//        val clusterOrderList = arrayListOf<Project>()
+//        val gwcpProvisioningProject = SubProjectBuilder(pipeLineProject)
+//            .createSubProject("GWCP Project provisioning", gwcpProvisioningProjectId)
+//            .build()
+//        subProjectsOrderList.add(gwcpProvisioningProject)
+//
+//        val tenantsList = props.getArrayList("clusters.tenants")
+//
+//        for (tenant in tenantsList) {
+//            var (clusterName, tenantName) = tenant.toString().split(".")
+//            clusterName = clusterName.trim()
+//            tenantName = tenantName.trim()
+//
+//            val clusterProjectId = "${gwcpProvisioningProjectId}_${clusterName}"
+//            props.set("project.cluster.id", clusterProjectId)
+//
+//            val clusterProject = SubProjectBuilder(gwcpProvisioningProject)
+//                .createSubProject(clusterName, clusterProjectId)
+//                .build()
+//            clusterOrderList.add(clusterProject)
+//
+//
+//            val tenantProjectId = "${clusterProjectId}_${tenantName}"
+//            props.set("project.tenant.id", tenantProjectId)
+//
+//            SubProjectBuilder(clusterProject)
+//                .createSubProject(tenantName, tenantProjectId)
+//                .withBuildTypeList(
+//                    arrayListOf(
+//                        CallUpdateISSourceCode(props),
+//                        DeleteProject(props),
+//                        IntegrationTest(props),
+//                        MigrateCICD(props),
+//                        PatchCICD(props),
+//                        ProvisionProject(props),
+//                        UpdateCICD(props)
+//
+//                    )
+//                )
+//                .build()
+//        }
+//        gwcpProvisioningProject.subProjectsOrder = clusterOrderList
+//
+//        val cloudDeploymentsProjectId = "${pipelineProjectId}_CloudDeployments"
+//        props.set("project.cloudDeployments.id", cloudDeploymentsProjectId)
+//        val cloudDeploymentsProject = SubProjectBuilder(pipeLineProject)
+//            .createSubProject("Cloud Deployments", cloudDeploymentsProjectId)
+//            .withBuildTypeList(
+//                arrayListOf(
+//                    DeployInGWCPEnvironment(props),
+//                    DeploymentHealthCheck(props)
+//                )
+//            )
+//            .build()
+//
+//        subProjectsOrderList.add(cloudDeploymentsProject)
+//
+//        pipeLineProject.subProjectsOrder = subProjectsOrderList
+//
+//    }
+//}
 
