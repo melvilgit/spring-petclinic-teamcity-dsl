@@ -44,7 +44,7 @@ class AssemblyLinesProject(private val props: ProjectProperties) : Project({
             name = "Docker Artifactory Registry"
             url = "https://artifactory.guidewire.com"
             userName = "sys-sas"
-            password = "credentialsJSON:73013dd5-ced3-45bf-8935-a43b93ceab46"
+            password = "credentialsJSON:3f849c01-5caa-4608-ba89-5a9d47a118b5"
         }
         dockerECRRegistry {
             id = "${projectId}_PROJECT_EXT_1124"
@@ -52,7 +52,7 @@ class AssemblyLinesProject(private val props: ProjectProperties) : Project({
             registryId = "535771865967"
             credentialsProvider = accessKey {
                 accessKeyId = "AKIAJRFLQ7NE6FZALREQ"
-                secretAccessKey = "credentialsJSON:511d6871-707d-4bb8-9cac-bf6383dca70a"
+                secretAccessKey = "credentialsJSON:3f849c01-5caa-4608-ba89-5a9d47a118b5"
             }
             regionCode = "eu-central-1"
             credentialsType = accessKeys()
@@ -63,7 +63,7 @@ class AssemblyLinesProject(private val props: ProjectProperties) : Project({
             registryId = "627188849628"
             credentialsProvider = accessKey {
                 accessKeyId = "AKIAZEB26LPOOFZD6ZGY"
-                secretAccessKey = "credentialsJSON:2d4d134e-07ac-4704-8f48-01891e18bf6c"
+                secretAccessKey = "credentialsJSON:3f849c01-5caa-4608-ba89-5a9d47a118b5"
             }
             regionCode = "us-west-2"
             credentialsType = accessKeys()
@@ -73,7 +73,7 @@ class AssemblyLinesProject(private val props: ProjectProperties) : Project({
             name = "Docker Registry"
             url = "https://dtr.guidewire.com"
             userName = "sys-sas"
-            password = "credentialsJSON:73013dd5-ced3-45bf-8935-a43b93ceab46"
+            password = "credentialsJSON:3f849c01-5caa-4608-ba89-5a9d47a118b5"
         }
     }
     val assemblyLineBuildTypesList = arrayListOf(VersionUpdate(props),Build(props),DockerizeAndPublish(props),PromoteArtifactsToS3(props))
