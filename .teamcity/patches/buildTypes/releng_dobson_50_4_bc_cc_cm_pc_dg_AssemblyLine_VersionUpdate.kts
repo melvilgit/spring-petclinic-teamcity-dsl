@@ -9,6 +9,12 @@ To apply the patch, change the buildType with id = 'releng_dobson_50_4_bc_cc_cm_
 accordingly, and delete the patch script.
 */
 changeBuildType(RelativeId("releng_dobson_50_4_bc_cc_cm_pc_dg_AssemblyLine_VersionUpdate")) {
+    params {
+        add {
+            param("release", "0")
+        }
+    }
+
     requirements {
         add {
             equals("release", "1")
