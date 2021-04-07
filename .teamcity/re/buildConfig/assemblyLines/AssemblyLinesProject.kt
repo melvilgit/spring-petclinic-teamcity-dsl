@@ -33,7 +33,7 @@ class AssemblyLinesProject(private val props: ProjectProperties) : Project({
         param("TEAMCITY_USER", "%system.teamcity.auth.userId%")
         param("SAS-BUILD-AGENT-11", "dtr.guidewire.com/sys-sas/build-agent:openjdk11-latest")
         param("sys-sas-artifactory-user", "%sas-user%")
-        password("sys-sas-password", "credentialsJSON:daecf980-d3c3-47dc-a560-0e147557a4e2", display = ParameterDisplay.HIDDEN)
+        password("sys-sas-password", "credentialsJSON:47961b05-cff9-4018-86e9-f8c64f7a7d58", display = ParameterDisplay.HIDDEN)
         param("SAS-BUILD-AGENT", "%SAS-BUILD-AGENT-8%")
         param("SAS-BUILD-AGENT-8", "dtr.guidewire.com/sys-sas/build-agent:jdk8-latest")
     }
