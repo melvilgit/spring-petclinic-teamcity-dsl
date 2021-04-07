@@ -54,8 +54,14 @@ object Project : Project({
     for (props in projectProperties) {
         val pipelineProjectId = props.get("branch.name").replace('-', '_')
 
+        val pipeLineProject = SubProjectBuilder(this)
+                .createSubProject(props.get("project.name"), pipelineProjectId).
+                        build()
+
         props.set("project.id", pipelineProjectId)
-        subProject(AssemblyLinesProject(props))
+        val assemblyLineProjectobj = AssemblyLinesProject(props)
+
+        pipeLineProject.subProject(assemblyLineProjectobj)
         /* SubProject for a CBC based on a branch*/
 //        val pipeLineProject = SubProjectBuilder(this)
 //            .createSubProject(props.get("project.name"), pipelineProjectId)
@@ -71,3 +77,7 @@ object Project : Project({
 //    subProject(HawaiiIntegration.Project)
     }
 })
+
+
+
+
