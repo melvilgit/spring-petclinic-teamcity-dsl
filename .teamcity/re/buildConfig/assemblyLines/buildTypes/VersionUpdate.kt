@@ -15,7 +15,8 @@ class VersionUpdate(private val props: ProjectProperties) : BuildType({
 
     if (props.getMap("build.pause").get("flag") == "false") {
         check(paused == false) {
-            "Unexpected paused: '$paused'"
+            "${props.getMap("build.pause").get("reason")}"
+
         }
         paused = true
 

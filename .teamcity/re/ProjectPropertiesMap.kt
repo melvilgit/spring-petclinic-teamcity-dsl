@@ -6,14 +6,14 @@ val PIPELINE_CONFIG = arrayOf(
                 "branch.name" to "releng_dobson_50_4-bc-cc-cm-pc",
                 "clusters.tenants" to arrayListOf("mint.releng"),
                 "products" to arrayListOf(PRODUCTS.BillingCenter, PRODUCTS.ClaimCenter, PRODUCTS.ContactManager, PRODUCTS.PolicyCenter),
-                "build.pause" to hashMapOf<String, Any>("flag" to "true", "reason" to "release going on")
+                "build.pause" to hashMapOf<String, Any>("flag" to "false", "reason" to "release going on")
         ),
         hashMapOf<String, Any>(
                 "project.name" to "Dobson BC CC CM PC DG",
                 "branch.name" to "releng_dobson_50_4-bc-cc-cm-pc-dg",
                 "clusters.tenants" to arrayListOf("mint.releng", "mdev.somedev"),
                 "products" to arrayListOf(PRODUCTS.BillingCenter, PRODUCTS.ClaimCenter, PRODUCTS.ContactManager, PRODUCTS.PolicyCenter),
-                "build.pause" to hashMapOf<String, Any>("flag" to "true", "reason" to "release going on")
+                "build.pause" to hashMapOf<String, Any>("flag" to "false", "reason" to "release going on")
         )
 
 )
