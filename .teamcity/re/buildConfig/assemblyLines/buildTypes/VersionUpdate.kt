@@ -6,13 +6,19 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.FailureAction
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 import re.PRODUCTS
 import re.ProjectProperties
-import re.buildConfig.assemblyLines.buildTypes.vcsRoots.VcsAssemblyLines
 
 class VersionUpdate(private val props: ProjectProperties) : BuildType({
-    id("${props.get("project.assemblyLine.id")}_VersionUpdate")
+    val buildId = "${props.get("project.assemblyLine.id")}_VersionUpdate"
+    id(buildId)
     name = "Version Update"
     description = "Replaces product versions in 'build.gradle' and updates build version in 'gradle.properties' file"
 
+    if (props.getMap("build.pause").get("flag") == "false") {
+        check(paused == true) {
+            "${props.getMap("build.pause").get("reason")}: '$paused'"
+        }
+        paused = true
+    }
     val paramsHash = hashMapOf<String, String>(
             "env.METRIC_PREFIX" to "releng.cbc.pd_teamcity.pal_version_update",
             "dd.tags.source.type" to "pal-gradle"
@@ -31,7 +37,7 @@ class VersionUpdate(private val props: ProjectProperties) : BuildType({
     /* parameters */
 
     if (productDependencies != null) {
-        for (product in productDependencies) this.params.param("env." + product.acronym + "_BUILD_NO", product.dependency_project_id + ".build.number")
+        for (product in productDependencies) this.params.param("env.${product.acronym}_BUILD_NO", "%dep.${product.dependency_project_id}.build.number%")
     }
 
     for ((key, value) in paramsHash) {
@@ -80,6 +86,8 @@ class VersionUpdate(private val props: ProjectProperties) : BuildType({
         }
     }
 
+
 })
 
+//ReleaseEngineering_CloudDeliveryPipelines_releng_dobson_50_4_bc_cc_cm_pc_AssemblyLine_VersionUpdate
 
