@@ -14,10 +14,11 @@ class VersionUpdate(private val props: ProjectProperties) : BuildType({
     description = "Replaces product versions in 'build.gradle' and updates build version in 'gradle.properties' file"
 
     if (props.getMap("build.pause").get("flag") == "false") {
-        check(paused == true) {
-            "${props.getMap("build.pause").get("reason")}: '$paused'"
-        }
-        paused = true
+    check(paused == false) {
+        "Unexpected paused: '$paused'"
+    }
+    paused = true
+
     }
     val paramsHash = hashMapOf<String, String>(
             "env.METRIC_PREFIX" to "releng.cbc.pd_teamcity.pal_version_update",
