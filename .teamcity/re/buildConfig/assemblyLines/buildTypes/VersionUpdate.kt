@@ -22,7 +22,6 @@ class VersionUpdate(private val props: ProjectProperties) : BuildType({
     }
 
 
-
     val paramsHash = hashMapOf<String, String>(
             "env.METRIC_PREFIX" to "releng.cbc.pd_teamcity.pal_version_update",
             "dd.tags.source.type" to "pal-gradle"
