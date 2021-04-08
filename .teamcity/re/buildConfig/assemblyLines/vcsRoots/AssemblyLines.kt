@@ -1,10 +1,10 @@
-package re.buildConfig.assemblyLines.buildTypes.vcsRoots
+package re.buildConfig.assemblyLines.vcsRoots
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.vcs.GitVcsRoot
 import re.ProjectProperties
 
 
-class VcsAssemblyLines(private val props : ProjectProperties) : GitVcsRoot({
+class AssemblyLines(private val props : ProjectProperties) : GitVcsRoot({
     val branchName = props.get("project.id")
      id("${branchName}_AssemblyLinesGit")
      name = "Assembly_lines_Vcs_Root"
@@ -12,7 +12,7 @@ class VcsAssemblyLines(private val props : ProjectProperties) : GitVcsRoot({
      branch = "refs/heads/${props.get("branch.name")}"
      authMethod = uploadedKey {
         userName = "git"
-        uploadedKey = "sas access key"
+        uploadedKey = "sys-releng-stash"
     }
 
 })

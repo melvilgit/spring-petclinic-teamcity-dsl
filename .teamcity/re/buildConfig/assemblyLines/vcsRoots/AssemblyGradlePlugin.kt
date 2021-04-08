@@ -1,4 +1,4 @@
-package re.buildConfig._Self.vcsRoots
+package re.buildConfig.assemblyLines.vcsRoots
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.vcs.GitVcsRoot
 import re.ProjectProperties
@@ -12,7 +12,7 @@ class AssemblyGradlePlugin(private val props: ProjectProperties) : GitVcsRoot({
     branch = "refs/heads/master"
     authMethod = uploadedKey {
         userName = "git"
-        uploadedKey = "sas access key"
+        uploadedKey = "sys-releng-stash"
     }
 })
 

@@ -3,9 +3,13 @@ package re.buildConfig.assemblyLines.buildTypes
 import jetbrains.buildServer.configs.kotlin.v2019_2.AbsoluteId
 import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.FailureAction
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.dockerSupport
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.sshAgent
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 import re.PRODUCTS
 import re.ProjectProperties
+import re.buildConfig.assemblyLines.vcsRoots.*
+
 
 class VersionUpdate(private val props: ProjectProperties) : BuildType({
     val buildId = "${props.get("project.assemblyLine.id")}_VersionUpdate"
@@ -13,7 +17,7 @@ class VersionUpdate(private val props: ProjectProperties) : BuildType({
     name = "Version Update"
     description = "Replaces product versions in 'build.gradle' and updates build version in 'gradle.properties' file"
 
-    if (props.getMap("build.pause").get("flag") == "false") {
+    if (props.getMap("build.pause").get("flag") == "true") {
         check(paused == false) {
             "${props.getMap("build.pause").get("reason")}"
 
@@ -48,6 +52,13 @@ class VersionUpdate(private val props: ProjectProperties) : BuildType({
         this.params.param(key, value)
     }
 
+    // VCS
+    vcs {
+        root(AssemblyLines(props))
+        root(AssemblyGradlePlugin(props))
+    }
+
+    /* Build Steps */
     steps {
         script {
             name = "Update build.gradle"
@@ -89,9 +100,21 @@ class VersionUpdate(private val props: ProjectProperties) : BuildType({
             """.trimIndent()
         }
     }
-
+    features {
+        sshAgent {
+            id = "BUILD_EXT_2"
+            teamcitySshKey = "sys-releng-stash"
+        }
+        feature {
+            id = "BUILD_EXT_3"
+            type = "JetBrains.SharedResources"
+            param("locks-param", "CBC_Version writeLock")
+        }
+        dockerSupport {
+            loginToRegistry = on {
+                dockerRegistryId = "PROJECT_EXT_3335"
+            }
+        }
+    }
 
 })
-
-//ReleaseEngineering_CloudDeliveryPipelines_releng_dobson_50_4_bc_cc_cm_pc_AssemblyLine_VersionUpdate
-

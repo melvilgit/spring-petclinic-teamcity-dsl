@@ -9,13 +9,18 @@ class gwcpProjectProvisioning(private val props: ProjectProperties) : Project({
     props.set("project.gwcpProvisioning.id", gwcpProvisioningProjectId)
     id(gwcpProvisioningProjectId)
     val tenantsClusterList = props.getArrayList("clusters.tenants")
-
+    val subProjectsOrderList = arrayListOf<Project>()
     for (tenantCluster in tenantsClusterList) {
         var (clusterName, tenantName) = tenantCluster.toString().split(".")
         props.set("clusterName", clusterName.trim())
         props.set("tenantName", tenantName.trim())
-        subProject(clusterSubProjects(props))
+        val clusterSubproject  = clusterSubProjects(props)
+        subProject(clusterSubproject)
+        subProjectsOrderList.add(clusterSubproject)
+
     }
+    subProjectsOrder = subProjectsOrderList
 })
+
 
 

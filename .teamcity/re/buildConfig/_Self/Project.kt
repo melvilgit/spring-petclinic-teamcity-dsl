@@ -28,23 +28,6 @@ object Project : Project({
         password("env.ARTIFACTORY_PASSWORD", "credentialsJSON:ffdcf9ef-ccaa-426a-9033-82a549de9181", display = ParameterDisplay.HIDDEN)
     }
 
-    features {
-        feature {
-            id = "PROJECT_EXT_1800"
-            type = "JetBrains.SharedResources"
-            param("quota", "1")
-            param("name", "CBC_Version")
-            param("type", "quoted")
-        }
-        dockerRegistry {
-            id = "PROJECT_EXT_3408"
-            name = "Artifactory"
-            url = "https://artifactory.guidewire.com/"
-            userName = "sys-releng-artf"
-            password = "credentialsJSON:c228d7d9-c305-4885-baed-69c077313fd8"
-
-        }
-    }
     subProjectsOrder = arrayListOf(RelativeId("PortfolioAssembly"))
 
     val projectProperties = PIPELINE_CONFIG.map { project -> ProjectProperties(project.toMutableMap()) }

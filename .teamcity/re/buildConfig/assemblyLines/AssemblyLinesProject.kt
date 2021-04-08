@@ -9,8 +9,8 @@ import re.buildConfig.assemblyLines.buildTypes.Build
 import re.buildConfig.assemblyLines.buildTypes.DockerizeAndPublish
 import re.buildConfig.assemblyLines.buildTypes.PromoteArtifactsToS3
 import re.buildConfig.assemblyLines.buildTypes.VersionUpdate
-import re.buildConfig.assemblyLines.buildTypes.vcsRoots.VcsAssemblyLines
-import re.buildConfig._Self.vcsRoots.AssemblyGradlePlugin
+import re.buildConfig.assemblyLines.vcsRoots.AssemblyGradlePlugin
+import re.buildConfig.assemblyLines.vcsRoots.AssemblyLines
 
 
 class AssemblyLinesProject(private val props: ProjectProperties) : Project({
@@ -21,7 +21,7 @@ class AssemblyLinesProject(private val props: ProjectProperties) : Project({
     name = "Assembly Lines"
     description = "Portfolio Assembly"
 
-    vcsRoot(VcsAssemblyLines(props))
+    vcsRoot(AssemblyLines(props))
     vcsRoot(AssemblyGradlePlugin(props))
 
     params {
