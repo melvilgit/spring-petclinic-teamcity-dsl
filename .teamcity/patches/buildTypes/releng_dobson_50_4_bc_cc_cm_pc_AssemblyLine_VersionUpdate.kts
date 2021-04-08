@@ -9,8 +9,8 @@ To apply the patch, change the buildType with id = 'releng_dobson_50_4_bc_cc_cm_
 accordingly, and delete the patch script.
 */
 changeBuildType(RelativeId("releng_dobson_50_4_bc_cc_cm_pc_AssemblyLine_VersionUpdate")) {
-    check(paused == true) {
+    check(paused == false) {
         "Unexpected paused: '$paused'"
     }
-    paused = false
+    paused = true
 }
