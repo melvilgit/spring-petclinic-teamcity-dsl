@@ -7,8 +7,9 @@ import re.ProjectProperties
 class clusterSubProjects(private val props: ProjectProperties) : Project({
     val clusterName = props.get("clusterName")
     val clusterProjectId = "${props.get("project.gwcpProvisioning.id")}_${clusterName}"
+    props.set("project.cluster.id", clusterProjectId)
     name = "${clusterName}"
     id(clusterProjectId)
-    val tenantProject = tenantSubProjects(props)
+    subProject(tenantSubProjects(props))
 
 })
