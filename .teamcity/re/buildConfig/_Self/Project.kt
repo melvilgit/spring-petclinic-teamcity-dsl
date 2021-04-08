@@ -1,7 +1,5 @@
 package re.buildConfig._Self
 
-//import _Self.buildTypes.*
-//import _Self.vcsRoots.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.ParameterDisplay
 import jetbrains.buildServer.configs.kotlin.v2019_2.Project
 import jetbrains.buildServer.configs.kotlin.v2019_2.RelativeId
@@ -45,9 +43,9 @@ object Project : Project({
             userName = "sys-releng-artf"
             password = "credentialsJSON:c228d7d9-c305-4885-baed-69c077313fd8"
 
-             }
+        }
     }
-   subProjectsOrder = arrayListOf(RelativeId("PortfolioAssembly"))
+    subProjectsOrder = arrayListOf(RelativeId("PortfolioAssembly"))
 
     val projectProperties = PIPELINE_CONFIG.map { project -> ProjectProperties(project.toMutableMap()) }
     for (props in projectProperties) {
@@ -56,25 +54,6 @@ object Project : Project({
         val cbcProject = cbcSubProjects(props)
         subProject(cbcProject)
 
-//        val pipeLineProject = SubProjectBuilder(this)
-//                .createSubProject(props.get("project.name"), pipelineProjectId).build()
-
-
-       // val assemblyLineProjectobj = AssemblyLinesProject(props)
-       // pipeLineProject.subProject(assemblyLineProjectobj)
-        /* SubProject for a CBC based on a branch*/
-//        val pipeLineProject = SubProjectBuilder(this)
-//            .createSubProject(props.get("project.name"), pipelineProjectId)
-//            .build()
-        // subProjectsOrder = arrayListOf(RelativeId("PortfolioAssembly"), RelativeId("UploadBasePackages"), RelativeId("OrangeBar"), RelativeId("CloudDeploymentsNonProduction"), RelativeId("Prototypes"), RelativeId("InfrastructureTests"))
-
-        //subProject(AssemblyLinesProject(props))
-//    subProject(OrangeBar.Project)
-//    subProject(CloudDeploymentsNonProduction.Project)
-//    subProject(UploadBasePackages.Project)
-//    subProject(CloudDeliveryPipleLineMonitoringReleaseManager.Project)
-//    subProject(InfrastructureTests.Project)
-//    subProject(HawaiiIntegration.Project)
     }
 })
 
