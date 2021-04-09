@@ -17,7 +17,7 @@ val PIPELINE_CONFIG = arrayOf(
         ),
             hashMapOf<String, Any>(
                 "project.name" to "Dobson BC CC CM PC DG2",
-                "branch.name" to "releng_dobson_50_4-bc-cc-cm-pc-dg1",
+                "branch.name" to "releng_dobson_50_4-bc-cc-cm-pc-dg2",
                 "clusters.tenants" to arrayListOf("mint.releng", "mdev.somedev"),
                 "products" to arrayListOf(PRODUCTS.BillingCenter, PRODUCTS.ClaimCenter, PRODUCTS.ContactManager),
                 "build.pause" to hashMapOf<String, Any>("flag" to "true", "reason" to "release going on")
