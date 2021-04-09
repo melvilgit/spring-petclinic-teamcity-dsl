@@ -20,12 +20,11 @@ class VersionUpdate(private val props: ProjectProperties) : BuildType({
     /* Setting the pause flag */
     if (props.getMap("build.pause").get("flag") == "true") {
         check(paused == false) {
-            "${props.getMap("build.pause").get("reason")}"
+            print(3333)
         }
         paused = true
 
     }
-
 
     /* dependencies*/
     @Suppress("UNCHECKED_CAST")
