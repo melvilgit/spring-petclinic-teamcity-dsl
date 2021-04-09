@@ -16,8 +16,9 @@ class VersionUpdate(private val props: ProjectProperties) : BuildType({
     id(buildId)
     name = "Version Update"
     description = "Replaces product versions in 'build.gradle' and updates build version in 'gradle.properties' file"
-    fun show() {
-        print("pausing the build for no reason")
+
+    fun show(){
+        print("hello, pausing the build...")
     }
     /* Setting the pause flag */
     if (props.getMap("build.pause").get("flag") == "true") {
