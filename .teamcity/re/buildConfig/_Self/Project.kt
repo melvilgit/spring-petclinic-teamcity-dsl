@@ -1,12 +1,10 @@
 package re.buildConfig._Self
 
-import jetbrains.buildServer.configs.kotlin.v2019_2.ParameterDisplay
 import jetbrains.buildServer.configs.kotlin.v2019_2.Project
-import jetbrains.buildServer.configs.kotlin.v2019_2.RelativeId
-import jetbrains.buildServer.configs.kotlin.v2019_2.projectFeatures.dockerRegistry
 import re.PIPELINE_CONFIG
 import re.ProjectProperties
-import re.buildConfig.cbcSubProjects.cbcSubProjects
+import re.buildConfig._Self.vcsRoots.AssemblyLines
+import re.buildConfig.cbcSubProjects.CbcSubProjects
 
 
 object Project : Project({
@@ -23,18 +21,15 @@ object Project : Project({
         param("env.PIP_INDEX_URL", "https://%artifactory.user%:%artifactory.password.url.encoded%@artifactory.guidewire.com/api/pypi/releng-pypi-release/simple")
         param("artifactory.user", "sys-releng-artf")
         param("python.392.docker.image", "artifactory.guidewire.com/hub-docker-remote/python:3.9.2-slim")
-        param("env.ARTIFACTORY_USERNAME", "sys-devops")
-        password("artifactory.password.url.encoded", "credentialsJSON:32964489-fc1d-401a-a78a-8aaa09f01e40", display = ParameterDisplay.HIDDEN, readOnly = true)
-        password("env.ARTIFACTORY_PASSWORD", "credentialsJSON:ffdcf9ef-ccaa-426a-9033-82a549de9181", display = ParameterDisplay.HIDDEN)
     }
 
-    subProjectsOrder = arrayListOf(RelativeId("PortfolioAssembly"))
+    vcsRoot(AssemblyLines)
 
     val projectProperties = PIPELINE_CONFIG.map { project -> ProjectProperties(project.toMutableMap()) }
     for (props in projectProperties) {
         val pipelineProjectId = props.get("branch.name").replace('-', '_')
         props.set("project.id", pipelineProjectId)
-        val cbcProject = cbcSubProjects(props)
+        val cbcProject = CbcSubProjects(props)
         subProject(cbcProject)
 
     }

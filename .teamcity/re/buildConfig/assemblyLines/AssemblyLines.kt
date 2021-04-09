@@ -2,27 +2,17 @@ package re.buildConfig.assemblyLines
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.ParameterDisplay
 import jetbrains.buildServer.configs.kotlin.v2019_2.Project
-import jetbrains.buildServer.configs.kotlin.v2019_2.projectFeatures.dockerECRRegistry
-import jetbrains.buildServer.configs.kotlin.v2019_2.projectFeatures.dockerRegistry
 import re.ProjectProperties
-import re.buildConfig.assemblyLines.buildTypes.Build
-import re.buildConfig.assemblyLines.buildTypes.DockerizeAndPublish
-import re.buildConfig.assemblyLines.buildTypes.PromoteArtifactsToS3
-import re.buildConfig.assemblyLines.buildTypes.VersionUpdate
-import re.buildConfig.assemblyLines.vcsRoots.AssemblyGradlePlugin
-import re.buildConfig.assemblyLines.vcsRoots.AssemblyLines
+import re.buildConfig.assemblyLines.buildTypes.*
 
 
-class AssemblyLinesProject(private val props: ProjectProperties) : Project({
+class AssemblyLines(private val props: ProjectProperties) : Project({
 
     val projectId = "${props.get("project.id")}_AssemblyLine"
     props.set("project.assemblyLine.id", projectId)
     id(projectId)
     name = "Assembly Lines"
     description = "Portfolio Assembly"
-
-    vcsRoot(AssemblyLines(props))
-    vcsRoot(AssemblyGradlePlugin(props))
 
     params {
         param("SAS-BUILD-EXTRAPARAM", """
@@ -35,19 +25,13 @@ class AssemblyLinesProject(private val props: ProjectProperties) : Project({
         param("TEAMCITY_USER", "%system.teamcity.auth.userId%")
         param("SAS-BUILD-AGENT-11", "dtr.guidewire.com/sys-sas/build-agent:openjdk11-latest")
         param("sys-sas-artifactory-user", "%sas-user%")
-        password("sys-sas-password", "credentialsJSON:f2ff9f5d-8391-46b3-b1cb-bfa2f93b0b49", display = ParameterDisplay.HIDDEN)
         param("SAS-BUILD-AGENT", "%SAS-BUILD-AGENT-8%")
         param("SAS-BUILD-AGENT-8", "dtr.guidewire.com/sys-sas/build-agent:jdk8-latest")
     }
 
+/*TODO: enable the features when needed by the pipeline
+
     features {
-        dockerRegistry {
-            id = "${projectId}_PROJECT_EXT_1123"
-            name = "Docker Artifactory Registry"
-            url = "https://artifactory.guidewire.com"
-            userName = "sys-sas"
-            password = "credentialsJSON:73013dd5-ced3-45bf-8935-a43b93ceab46"
-        }
         dockerECRRegistry {
             id = "${projectId}_PROJECT_EXT_1124"
             displayName = "Amazon ECR"
@@ -70,14 +54,9 @@ class AssemblyLinesProject(private val props: ProjectProperties) : Project({
             regionCode = "us-west-2"
             credentialsType = accessKeys()
         }
-        dockerRegistry {
-            id = "${projectId}_PROJECT_EXT_1126"
-            name = "Docker Registry"
-            url = "https://dtr.guidewire.com"
-            userName = "sys-sas"
-            password = "credentialsJSON:73013dd5-ced3-45bf-8935-a43b93ceab46"
-        }
     }
+    */
+
     val assemblyLineBuildTypesList = arrayListOf(VersionUpdate(props), Build(props), DockerizeAndPublish(props), PromoteArtifactsToS3(props))
 
     for (assemblyLineBuildType in assemblyLineBuildTypesList) {

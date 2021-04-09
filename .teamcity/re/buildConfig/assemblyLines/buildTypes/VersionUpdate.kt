@@ -8,7 +8,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.sshAgent
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 import re.PRODUCTS
 import re.ProjectProperties
-import re.buildConfig.assemblyLines.vcsRoots.*
+import re.buildConfig._Self.vcsRoots.AssemblyLines
 
 
 class VersionUpdate(private val props: ProjectProperties) : BuildType({
@@ -17,20 +17,15 @@ class VersionUpdate(private val props: ProjectProperties) : BuildType({
     name = "Version Update"
     description = "Replaces product versions in 'build.gradle' and updates build version in 'gradle.properties' file"
 
+    /* Setting the pause flag */
     if (props.getMap("build.pause").get("flag") == "true") {
         check(paused == false) {
             "${props.getMap("build.pause").get("reason")}"
-
         }
         paused = true
 
     }
 
-
-    val paramsHash = hashMapOf<String, String>(
-            "env.METRIC_PREFIX" to "releng.cbc.pd_teamcity.pal_version_update",
-            "dd.tags.source.type" to "pal-gradle"
-    )
 
     /* dependencies*/
     @Suppress("UNCHECKED_CAST")
@@ -43,19 +38,23 @@ class VersionUpdate(private val props: ProjectProperties) : BuildType({
     }
 
     /* parameters */
-
     if (productDependencies != null) {
-        for (product in productDependencies) this.params.param("env.${product.acronym}_BUILD_NO", "%dep.${product.dependency_project_id}.build.number%")
+        for (product in productDependencies)
+            this.params.param("env.${product.acronym}_BUILD_NO", "%dep.${product.dependency_project_id}.build.number%")
     }
+
+    val paramsHash = hashMapOf<String, String>(
+        "env.METRIC_PREFIX" to "releng.cbc.pd_teamcity.pal_version_update",
+        "dd.tags.source.type" to "pal-gradle"
+    )
 
     for ((key, value) in paramsHash) {
         this.params.param(key, value)
     }
 
-    // VCS
+    /* VCS */
     vcs {
-        root(AssemblyLines(props))
-        root(AssemblyGradlePlugin(props))
+        root(AssemblyLines)
     }
 
     /* Build Steps */
@@ -63,7 +62,8 @@ class VersionUpdate(private val props: ProjectProperties) : BuildType({
         script {
             name = "Update build.gradle"
             id = "RUNNER_1"
-            scriptContent = "python AssemblyLineUtil.py  -BC_Build_Number ${'$'}{BC_BUILD_NO} -CC_Build_Number ${'$'}{CC_BUILD_NO} -CM_Build_Number ${'$'}{CM_BUILD_NO} -PC_Build_Number  ${'$'}{PC_BUILD_NO} -Template_File ./build.gradle_template -Destination_File ./build.gradle"
+            scriptContent =
+                "python AssemblyLineUtil.py  -BC_Build_Number ${'$'}{BC_BUILD_NO} -CC_Build_Number ${'$'}{CC_BUILD_NO} -CM_Build_Number ${'$'}{CM_BUILD_NO} -PC_Build_Number  ${'$'}{PC_BUILD_NO} -Template_File ./build.gradle_template -Destination_File ./build.gradle"
             dockerImage = "artifactory.guidewire.com/hub-docker-remote/python:latest"
             dockerRunParameters = """
                 -v "${'$'}SSH_AUTH_SOCK:/tmp/ssh_auth_sock"
