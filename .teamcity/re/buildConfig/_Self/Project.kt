@@ -17,22 +17,30 @@ object Project : Project({
 
     params {
         param("env.PIP_EXTRA_INDEX_URL", "https://pypi.org/simple")
-        param("monitoring.docker.image", "artifactory.guidewire.com/releng-docker-release/cloud-delivery-pipeline-monitoring:1.0.2")
-        param("env.PIP_INDEX_URL", "https://%artifactory.user%:%artifactory.password.url.encoded%@artifactory.guidewire.com/api/pypi/releng-pypi-release/simple")
+        param(
+            "monitoring.docker.image",
+            "artifactory.guidewire.com/releng-docker-release/cloud-delivery-pipeline-monitoring:1.0.2"
+        )
+        param(
+            "env.PIP_INDEX_URL",
+            "https://%artifactory.user%:%artifactory.password.url.encoded%@artifactory.guidewire.com/api/pypi/releng-pypi-release/simple"
+        )
         param("artifactory.user", "sys-releng-artf")
         param("python.392.docker.image", "artifactory.guidewire.com/hub-docker-remote/python:3.9.2-slim")
     }
 
     vcsRoot(AssemblyLines)
-
+    val subProjectarrayList = arrayListOf<Project>()
     val projectProperties = PIPELINE_CONFIG.map { project -> ProjectProperties(project.toMutableMap()) }
     for (props in projectProperties) {
         val pipelineProjectId = props.get("branch.name").replace('-', '_')
         props.set("project.id", pipelineProjectId)
         val cbcProject = CbcSubProjects(props)
+        subProjectarrayList.add(cbcProject)
         subProject(cbcProject)
 
     }
+    subProjectsOrder = subProjectarrayList
 })
 
 
